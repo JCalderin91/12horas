@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
-    <side-bar-menu />
+    <side-bar-menu :drawer="drawer" />
 
-    <nav-bar />
+    <nav-bar @menu="drawer = !drawer" />
 
     <v-main>
       <div class="pa-4 pb-10">
@@ -24,7 +24,6 @@ import Breadcrumbs from './components/Breadcrumbs'
       source: String,
     },
     data: () => ({
-      dialog: false,
       drawer: null,      
     }),
   }

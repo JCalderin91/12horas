@@ -9,11 +9,11 @@
         <v-col lg="8" sm="8" xs="12" class="p-4 sm:p-2">
           <v-row>
             <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-              <v-text-field class="inputx w-full" label="Nombres y Apellidos" placeholder="Nombres y Apellidos"
+              <v-text-field  label="Nombres y Apellidos" placeholder="Nombres y Apellidos"
                 v-model="dealer.name" :readonly="!editing" />
             </v-col>
             <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-              <v-text-field class="inputx w-full" label="Teléfono" placeholder="Teléfono" v-model="dealer.price"
+              <v-text-field  label="Teléfono" placeholder="Teléfono" v-model="dealer.price"
                 :readonly="!editing" />
             </v-col>
             <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
@@ -24,15 +24,15 @@
               </v-select>
             </v-col>
             <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-              <v-text-field class="inputx w-full" label="Usuario" placeholder="Usuario" v-model="dealer.discount"
+              <v-text-field  label="Usuario" placeholder="Usuario" v-model="dealer.discount"
                 :readonly="!editing" />
             </v-col>
             <v-col lg="6" sm="6" xs="12" class="p-4 sm:p-2">
-              <v-text-field class="inputx w-full" label="Contraseña" placeholder="Contraseña" v-model="dealer.price"
+              <v-text-field  label="Contraseña" placeholder="Contraseña" v-model="dealer.price"
                 :readonly="!editing" />
             </v-col>
             <v-col lg="6" sm="6" xs="12" class="p-4 sm:p-2">
-              <v-text-field class="inputx w-full" label="Confirmar contraseña" placeholder="Confirmar contraseña"
+              <v-text-field  label="Confirmar contraseña" placeholder="Confirmar contraseña"
                 v-model="dealer.discount" :readonly="!editing" />
             </v-col>
 
@@ -50,16 +50,16 @@
 
         <v-col v-if="viewModal" sm="12" class="p-4 sm:p-2 flex justify-between">
           <v-btn @click="openConfirm()" color="danger" :disabled="editing" class="mr-2">Eliminar</v-btn>
-          <div class="flex justify-end">
-            <v-btn v-if="!editing" @click="editDealer()" color="primary" type="filled" class="mr-2">Editar</v-btn>
+          <div class="d-flex justify-end">
+            <v-btn v-if="!editing" @click="editDealer()" color="primary"  class="mr-2">Editar</v-btn>
             <v-btn @click="cancel()" v-else color="danger" class="mr-2">Cancelar</v-btn>
-            <v-btn @click="updateDealer()" :disabled="!editing" color="success" type="filled">Guardar</v-btn>
+            <v-btn @click="updateDealer()" :disabled="!editing" color="success" >Guardar</v-btn>
           </div>
         </v-col>
 
         <v-col v-else sm="12" class="p-4 sm:p-2 flex justify-end">
           <v-btn @click="cancel()" color="danger" class="mr-2">Cancelar</v-btn>
-          <v-btn @click="saveDealer()" :disabled="!editing" color="success" type="filled">Guardar</v-btn>
+          <v-btn @click="saveDealer()" :disabled="!editing" color="success" >Guardar</v-btn>
         </v-col>
 
       </v-row>

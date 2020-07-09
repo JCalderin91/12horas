@@ -1,54 +1,47 @@
 <template>
-  <div>
-    <v-row>
-      <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-        <div>
-          <div class="flex justify-between">
-            <h4>Lista de categorias</h4>
-            <v-btn @click="handlePrompt(true)" color="success" type="filled" class="mr-2">Agergar</v-btn>
+  <v-card>
+    <v-card-text>
+      <v-row>
+        <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
+          <div>
+            <div class="d-flex justify-between">
+              <h4>Lista de categorias</h4>
+            </div>
+
+            <v-data-table :loading="loading" :headers="headers" :items="categories" :search="search">
+              <template v-slot:item.url_imagen="{item}">
+                <v-avatar size="36px">
+                  <img alt="Avatar" :src="item.url_imagen">
+                </v-avatar>
+              </template>
+              <template v-slot:item.actions="{item}">
+                <div class="d-flex">
+                  <v-btn @click="editRecord(item)" small fab text>
+                    <v-icon>mdi-playlist-edit</v-icon>
+                  </v-btn>
+                  <v-btn @click="confirmDeleteRecord(item.idcategoria)" small fab text>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
+              </template>
+            </v-data-table>
+
+
           </div>
-          <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="categories">
+        </v-col>
+      </v-row>
+    </v-card-text>
 
-            <template slot="thead">
-              <vs-th sort-key="orden">Orden</vs-th>
-              <vs-th sort-key="titulo">Título</vs-th>
-              <vs-th>Imagen</vs-th>
-              <vs-th>Aciones</vs-th>
-            </template>
+    <v-btn @click="handlePrompt()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
 
-            <template slot-scope="{data}">
-              <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-                <vs-td :data="data[indextr].orden">
-                  {{ data[indextr].orden }}
-                </vs-td>
-                <vs-td :data="data[indextr].titulo">
-                  {{ data[indextr].titulo }}
-                </vs-td>
-                <vs-td :data="data[indextr].url_imagen">
-                  <img key="onlineImg" :src="data[indextr].url_imagen" alt="user-img" width="30" height="30"
-                    class="rounded-full shadow-md block" />
-                </vs-td>
-                <vs-td :data="data[indextr].url_imagen">
-
-                  <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-                    @click="editRecord(tr)" />
-                  <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
-                    @click="confirmDeleteRecord(tr.idcategoria)" />
-                </vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-        </div>
-      </v-col>
-    </v-row>
-
-    <v-dialog title="Categoria" buttons-hidden @close="close" v-model="activePrompt">
-      <div class="con-exemple-prompt">
-        <category-create v-if="!editing" @closePrompt="close()"></category-create>
-        <category-edit v-else @closePrompt="close()" :category="categoryToEdit"></category-edit>
-      </div>
+    <v-dialog v-model="activePrompt">
+      <category-create v-if="!editing" @closePrompt="close()"></category-create>
+      <category-edit v-else @closePrompt="close()" :category="categoryToEdit"></category-edit>
     </v-dialog>
-  </div>
+
+  </v-card>
 </template>
 
 <script>
@@ -69,7 +62,26 @@ export default {
     categoryToEdit: {},
     activePrompt: false,
     showModal: true,
-    editing: false
+    editing: false,
+    loading: false,
+    search: '',
+    headers: [{
+        text: 'Orden',
+        value: 'orden'
+      },
+      {
+        text: 'Titulo',
+        value: 'titulo',
+      },
+      {
+        text: 'Imagen',
+        value: 'url_imagen'
+      },
+      {
+        text: 'Acciones',
+        value: 'actions'
+      },
+    ]
   }),
   methods: {
     ...mapActions({
@@ -97,31 +109,38 @@ export default {
       }
       this.activePrompt = true
     },
-    confirmDeleteRecord(idcategoria) {
-      this.$vs.dialog({
-        type: 'confirm',
-        color: 'danger',
-        title: 'Confirmar',
-        text: '¿Está seguro de eliminar?',
-        accept: () => this.deleteHandle(idcategoria)
+    confirmDeleteRecord (id) {
+      this.$swal({
+        title: '¿Esta seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Borrar'
+      }).then((result) => {
+        if (result.value) {
+          this.loading = true
+          this.removeCategory(id)
+            .then(() => {
+              this.$swal('Borrado!', 'Su registro ha sido borrado','success')
+              this.$emit('closePrompt')
+            })
+            .catch(() => {
+              this.$swal('Alerta!', 'Ha ocurrido un error','error')
+            })
+            .then(() => this.loading = false)
+        }
       })
-    },
-    deleteHandle(idcategoria) {
-      this.removeCategory(idcategoria)
-        .then(() => {
-          this.$swal('Exito!', 'Categoria eliminada', 'success')
-          this.$emit('closePrompt')
-        })
-        .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
-        })
-    },
+    }
   },
   created() {
+    this.loading = true
     this.fetchCategories()
       .catch(() => {
-        this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+        this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
       })
+      .then(() => this.loading = false)
   },
   computed: {
     ...mapState({

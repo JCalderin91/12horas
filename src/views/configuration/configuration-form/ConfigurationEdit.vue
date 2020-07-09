@@ -16,40 +16,40 @@
       <v-row >
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Consumo minimo" placeholder="Consumo minimo" v-model="configuration.consumo_minimo" :readonly="!editing"/>
+          <v-text-field  label="Consumo minimo" placeholder="Consumo minimo" v-model="configuration.consumo_minimo" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Tolerancia (Minutos)" placeholder="Tolerancia (Minutos)" v-model="configuration.min_tolerancia" :readonly="!editing"/>
+          <v-text-field  label="Tolerancia (Minutos)" placeholder="Tolerancia (Minutos)" v-model="configuration.min_tolerancia" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Costo por minuto" placeholder="Costo por minuto" v-model="configuration.costo_minuto" :readonly="!editing"/>
+          <v-text-field  label="Costo por minuto" placeholder="Costo por minuto" v-model="configuration.costo_minuto" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Tarifa minima" placeholder="Tarifa minima" v-model="configuration.tarifa_minima" :readonly="!editing"/>
+          <v-text-field  label="Tarifa minima" placeholder="Tarifa minima" v-model="configuration.tarifa_minima" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Km permitidos" placeholder="Km permitidos" v-model="configuration.km_permitidos" :readonly="!editing"/>
+          <v-text-field  label="Km permitidos" placeholder="Km permitidos" v-model="configuration.km_permitidos" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Latitud" placeholder="Latitud" v-model="configuration.lat_centro_envio" :readonly="!editing"/>
+          <v-text-field  label="Latitud" placeholder="Latitud" v-model="configuration.lat_centro_envio" :readonly="!editing"/>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Longitud" placeholder="Longitud" v-model="configuration.lng_centro_envio" :readonly="!editing"/>
+          <v-text-field  label="Longitud" placeholder="Longitud" v-model="configuration.lng_centro_envio" :readonly="!editing"/>
         </v-col>      
 
 
         <v-col sm="12" class="p-4 sm:p-2 flex justify-between">
           <v-btn @click="openConfirm()" color="danger"  :disabled="editing" class="mr-2">Eliminar</v-btn>
-          <div class="flex justify-end">
-            <v-btn v-if="!editing" @click="editConfiguration()" color="primary" type="filled" class="mr-2">Editar</v-btn>
+          <div class="d-flex justify-end">
+            <v-btn v-if="!editing" @click="editConfiguration()" color="primary"  class="mr-2">Editar</v-btn>
             <v-btn @click="cancel()" v-else color="danger"  class="mr-2">Cancelar</v-btn>
-            <v-btn @click="saveConfiguration()" :disabled="!editing" color="success" type="filled">Guardar</v-btn>            
+            <v-btn @click="saveConfiguration()" :disabled="!editing" color="success" >Guardar</v-btn>            
           </div>
         </v-col>
 
@@ -97,7 +97,7 @@ export default {
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
     },
     openConfirm () {
@@ -120,7 +120,7 @@ export default {
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
     },
     cancel () {

@@ -5,7 +5,7 @@
     </v-card-title>
     <v-card-text>
       <v-textarea outlined dense label="Descripción" v-model="banner.descripcion" />
-      <v-text-field style="max-width: 300px" outlined dense type="number" class="inputx w-full" label="Precio" placeholder="Precio" v-model="banner.precio" />
+      <v-text-field style="max-width: 300px" outlined dense type="number"  label="Precio" placeholder="Precio" v-model="banner.precio" />
       <br>
       <div class="imagen-input">
         <span class="d-block"><small for="">Imagen de referencia</small></span>
@@ -16,7 +16,7 @@
       <br>
       <div class="d-flex justify-end">
         <v-btn @click="cancel()" color="danger" class="mr-2">Cancelar</v-btn>
-        <v-btn @click="saveBanner()" color="success" type="filled">Guardar</v-btn>
+        <v-btn @click="saveBanner()" color="success" >Guardar</v-btn>
       </div>
     </v-card-text>
   </v-card>
@@ -42,11 +42,11 @@ export default {
       this.loading = true
       this.addBanner(this.banner)
         .then(() => {
-          this.$swal('Exito!', 'Banner guardado','danger')
+          this.$swal('Exito!', 'Banner guardado','success')
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
         .then(() => this.loading = false)
     },

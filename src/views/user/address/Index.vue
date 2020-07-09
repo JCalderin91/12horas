@@ -1,76 +1,43 @@
 <template>
-  <div>
-    <v-row>
-      <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-        <div>
-          <div class="btn-back" @click="$router.push({name: 'user'})">
-            <h5>
-              <feather-icon icon="ArrowLeftIcon" svgClasses="h-5 w-5 mr-4" /> Volver</h5>
-          </div>
-          <div class="flex justify-between">
-            <h4>Lista de direcciones</h4>
-            <v-btn @click="handlePrompt(true)" color="success" type="filled" class="mr-2">Agergar</v-btn>
-          </div>
-          <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="addresses">
+  <v-card>
+    
+    <v-card-text>
+      <v-card-text>
+        <v-card-title>
+          {{$route.meta.pageTitle}}
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details></v-text-field>
+        </v-card-title>
 
-            <template slot="thead">
-              <vs-th sort-key="calle">Calle</vs-th>
-              <vs-th sort-key="numeroext">Num Ext</vs-th>
-              <vs-th sort-key="numeroint">Num Int</vs-th>
-              <vs-th sort-key="colonia">Colonia</vs-th>
-              <vs-th sort-key="referencia">Referencia</vs-th>
-              <vs-th sort-key="codigopostal">Codigo postal</vs-th>
-              <vs-th sort-key="latitud">Latitud</vs-th>
-              <vs-th sort-key="longitud">Longitud</vs-th>
-              <vs-th>Aciones</vs-th>
-            </template>
+        <v-data-table :loading="loading" :headers="headers" :items="addresses" :search="search">
+          <template v-slot:item.url_imagen="{item}">
+            <v-avatar size="36px">
+              <img alt="Avatar" :src="item.url_imagen">
+            </v-avatar>
+          </template>
+          <template v-slot:item.actions="{item}">
+            <div class="d-flex">
+              <v-btn @click="editRecord(item)" small fab text>
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+              <v-btn @click="confirmDeleteRecord(item.iddireccion)" small fab text>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card-text>
 
-            <template slot-scope="{data}">
-              <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-                <vs-td :data="tr.calle">
-                  {{ tr.calle }}
-                </vs-td>
-                <vs-td :data="tr.numeroext">
-                  {{ tr.numeroext }}
-                </vs-td>
-                <vs-td :data="tr.numeroint">
-                  {{ tr.numeroint }}
-                </vs-td>
-                <vs-td :data="tr.colonia">
-                  {{ tr.colonia }}
-                </vs-td>
-                <vs-td :data="tr.referencia">
-                  {{ tr.referencia }}
-                </vs-td>
-                <vs-td :data="tr.codigopostal">
-                  {{ tr.codigopostal }}
-                </vs-td>
-                <vs-td :data="tr.latitud">
-                  {{ tr.latitud }}
-                </vs-td>
-                <vs-td :data="tr.longitud">
-                  {{ tr.longitud }}
-                </vs-td>
-                <vs-td>
-                  <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-                    @click="editRecord(tr)" />
-                  <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
-                    @click="confirmDeleteRecord(tr.iddireccion)" />
-                </vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-        </div>
-      </v-col>
-    </v-row>
+    <v-btn @click="handlePrompt()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
 
-    <v-dialog title="Direcciones" buttons-hidden @close="close" v-model="activePrompt">
-      <div class="con-exemple-prompt">
-        <address-create v-if="!editing" @closePrompt="close()"></address-create>
-        <address-edit v-else @closePrompt="close()" :address="addressToEdit"></address-edit>
-      </div>
+    <v-dialog v-model="activePrompt">
+      <address-create v-if="!editing" @closePrompt="close()"></address-create>
+      <address-edit v-else @closePrompt="close()" :address="addressToEdit"></address-edit>
     </v-dialog>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -91,7 +58,47 @@ export default {
     addressToEdit: {},
     activePrompt: false,
     showModal: true,
-    editing: false
+    editing: false,
+    search: '',
+    loading: false,
+    headers: [
+      {
+        text: 'Calle',
+        value: 'calle'
+      },
+      {
+        text: 'Num Ext',
+        value: 'numeroext',
+      },
+      {
+        text: 'Num Int',
+        value: 'numeroint',
+      },
+      {
+        text: 'Colonia',
+        value: 'colonia'
+      },
+      {
+        text: 'Referencia',
+        value: 'referencia'
+      },
+      {
+        text: 'Codigo Postal',
+        value: 'codigopostal'
+      },
+      {
+        text: 'Latitud',
+        value: 'latitud'
+      },
+      {
+        text: 'Longitud',
+        value: 'longitud'
+      },
+      {
+        text: 'Acciones',
+        value: 'actions'
+      },
+    ]
   }),
   methods: {
     ...mapActions({
@@ -119,35 +126,36 @@ export default {
       }
       this.activePrompt = true
     },
-    confirmDeleteRecord(id) {
-      this.$vs.dialog({
-        type: 'confirm',
-        color: 'danger',
-        title: 'Confirmar',
-        text: '¿Está seguro de eliminar?',
-        accept: () => this.deleteHandle(id)
+    confirmDeleteRecord (id) {
+      this.$swal({
+        title: '¿Esta seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Borrar'
+      }).then((result) => {
+        if (result.value) {
+          this.loading = true
+          this.removeAddress(id)
+            .then(async () => {
+              await this.fetchUserAddresses(this.$route.params.id)
+              this.$swal('Borrado!', 'Su registro ha sido borrado','success')
+              this.$emit('closePrompt')
+            })
+            .catch(() => {
+              this.$swal('Alerta!', 'Ha ocurrido un error','error')
+            })
+            .then(() => this.loading = false)
+        }
       })
-    },
-    deleteHandle(id) {
-      this.removeAddress(id)
-        .then(async () => {
-          await this.fetchUserAddresses(this.$route.params.id)
-          this.$notify({
-            color: 'success',
-            title: 'Exito',
-            text: 'Dirección eliminada'
-          })
-          this.$emit('closePrompt')
-        })
-        .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
-        })
-    },
+    }
   },
   created() {
     this.fetchUserAddresses(this.$route.params.id)
       .catch(() => {
-        this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+        this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
       })
   },
   computed: {

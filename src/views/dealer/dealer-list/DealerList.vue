@@ -14,9 +14,9 @@
     
     <div>
 
-      <div class="flex justify-between">
+      <div class="d-flex justify-between">
         <h4>{{$route.meta.pageTitle}}</h4>
-        <v-btn @click="handleSelected(true)" color="success" type="filled">Agregar</v-btn>
+        <v-btn @click="handleSelected(true)" color="success" >Agregar</v-btn>
       </div>
 
        

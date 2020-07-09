@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <v-text-field class="inputx w-full" label="Precio" placeholder="Precio" v-model="role.nombre" />
-    <br>
-    <v-textarea label="Descripción" v-model="role.descripcion" />
-    <br>
-    <div class="flex justify-end">
-      <v-btn @click="cancel()" color="danger" class="mr-2">Cancelar</v-btn>
-      <v-btn @click="saveRole()" color="success" type="filled">Guardar</v-btn>
-    </div>
-  </div>
+  <v-card>
+    <v-card-title>Formulario de rol</v-card-title>
+    <v-card-text>
+      <v-text-field  label="Precio" placeholder="Precio" v-model="role.nombre" />
+      <br>
+      <v-textarea label="Descripción" v-model="role.descripcion" />
+      <br>
+      <div class="d-flex justify-end">
+        <v-btn @click="cancel()" color="danger" class="mr-2">Cancelar</v-btn>
+        <v-btn @click="saveRole()" color="success" >Guardar</v-btn>
+      </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -34,7 +37,7 @@ export default {
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
         })
     },
     cancel() {

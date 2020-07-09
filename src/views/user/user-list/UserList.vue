@@ -1,57 +1,39 @@
 <template>
 
-  <div id="page-user-list">
+  <v-card>
 
+    <v-card-text>
 
-    <div>
-
-      <div class="flex justify-between">
-        <h4>{{$route.meta.pageTitle}}</h4>
-        <v-btn @click="handleSelected(true)" color="success" type="filled">Agregar</v-btn>
-      </div>
-
-
-      <vs-table stripe noDataText="No hay datos" search max-items="10" pagination v-model="selectedUser"
-        @selected="handleSelected()" :data="usersData">
-
-        <template slot="thead">
-          <vs-th sort-key="nombres">Nombres</vs-th>
-          <vs-th sort-key="telefono">Teléfono</vs-th>
-          <vs-th sort-key="correo">Correo</vs-th>
-          <vs-th sort-key="status">Estado</vs-th>
+      <v-data-table :loading="loading" :headers="headers" :items="users" :search="search">
+        <template v-slot:item.url_imagen="{item}">
+          <v-avatar size="36px">
+            <img alt="Avatar" :src="item.url_imagen">
+          </v-avatar>
         </template>
-
-        <template slot-scope="{data}">
-          <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-
-            <vs-td :data="data[indextr].nombres">
-              {{ data[indextr].nombres }}
-            </vs-td>
-
-            <vs-td :data="data[indextr].telefono">
-              {{ data[indextr].telefono }}
-            </vs-td>
-
-            <vs-td :data="data[indextr].correo">
-              {{ data[indextr].correo }}
-            </vs-td>
-
-            <vs-td :data="data[indextr].status">
-              {{ data[indextr].status }}
-            </vs-td>
-
-          </vs-tr>
+        <template v-slot:item.actions="{item}">
+          <div class="d-flex">
+            <v-btn @click="handleSelected(item)" small fab text>
+              <v-icon>mdi-playlist-edit</v-icon>
+            </v-btn>
+            <v-btn @click="confirmDeleteRecord(item.idbanner)" small fab text>
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </div>
         </template>
-      </vs-table>
+      </v-data-table>
 
-    </div>
+    </v-card-text>
 
-    <v-dialog title="Usuario" @cancel="val=''" @close="close" buttons-hidden class="custom" v-model="activePrompt">
-      <user-create v-if="!viewModal" @closePrompt="close()"></user-create>
+    <v-btn @click="handleSelected()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+
+    <v-dialog v-model="activePrompt">
+      <user-create v-if="viewModal" @closePrompt="close()"></user-create>
       <user-edit v-else @closePrompt="close()" :user="{...user}"></user-edit>
     </v-dialog>
 
-  </div>
+  </v-card>
 
 </template>
 
@@ -74,22 +56,45 @@ export default {
       activePrompt: false,
       viewModal: true,
       selectedUser: {},
-      user: {}
+      user: {},
+      loading: false,
+      search: '',
+      headers: [
+          {
+            text: 'Nombres',
+            value: 'nombres',
+          },
+          {
+            text: 'Telefono',
+            value: 'telefono'
+          },
+          {
+            text: 'Correo',
+            value: 'correo'
+          },
+          {
+            text: 'Estado',
+            value: 'status'
+          },
+          {
+            text: 'Acciones',
+            value: 'actions'
+          },
+        ]
     }
 
   },
   methods: {
     ...mapActions({
-      'fetchUsers': 'user/fetchUsers',
-      'fetchRoles': 'role/fetchRoles',
+      'fetchUsers': 'user/fetchUsers'
     }),
-    handleSelected(add) {
+    handleSelected(user) {
       this.activePrompt = true
-      if (add) {
-        this.user = {}
-        this.viewModal = false
+      if (user) {
+        this.user = user
+        this.viewModal = false        
       } else {
-        this.user = this.selectedUser
+        this.user = {}
         this.viewModal = true
       }
     },
@@ -102,17 +107,16 @@ export default {
   },
   computed: {
     ...mapState({
-      usersData: ({
+      users: ({
         user
       }) => user.users
     })
   },
   created() {
-    this.fetchRoles()
+    this.loading = true
     this.fetchUsers()
-      .catch(() => {
-        this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
-      })
+      .catch(() => this.$swal('Alerta!', 'Ha ocurrido un error','error'))
+      .then(() => this.loading = false )
   }
 }
 

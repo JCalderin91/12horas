@@ -45,7 +45,7 @@
           <v-btn @click="openConfirm()" color="error" outlined class="mr-2">Eliminar</v-btn>
           <v-spacer></v-spacer>
           <v-btn @click="cancel()" class="mr-2">Cancelar</v-btn>
-          <v-btn @click="saveProduct()" color="success" type="filled">Guardar</v-btn>
+          <v-btn @click="saveProduct()" color="success" >Guardar</v-btn>
         </v-col>
 
       </v-row>
@@ -92,7 +92,7 @@ export default {
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
         .then(() => this.loading = false)
     },
@@ -114,7 +114,7 @@ export default {
               this.$emit('closePrompt')
             })
             .catch(() => {
-              this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+              this.$swal('Alerta!', 'Ha ocurrido un error','error')
             })
             .then(() => this.loading = false)
         }

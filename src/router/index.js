@@ -22,7 +22,7 @@ Vue.use(VueRouter)
             { text: 'Productos', href: '/productos' },
             { text: 'Lista', disabled: true }
           ],
-          pageTitle: 'Lista de productos',
+          text: 'Lista de productos',
           rule: 'editor'
         }
       },
@@ -36,7 +36,7 @@ Vue.use(VueRouter)
             { text: 'Banner', href: '/banners' },
             { text: 'Lista', disabled: true }
           ],
-          pageTitle: 'Lista de banners',
+          text: 'Lista de banners',
           rule: 'editor'
         }
       },
@@ -46,10 +46,10 @@ Vue.use(VueRouter)
         component: () => import('@/views/configuration/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Configuraciones', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Configuraciones', disabled: true }
           ],
-          pageTitle: 'Configuraciones',
+          text: 'Configuraciones',
           rule: 'editor'
         }
       },
@@ -59,11 +59,11 @@ Vue.use(VueRouter)
         component: () => import('@/views/dealer/dealer-list/DealerList.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Repartidores' },
-            { title: 'Lista', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Repartidores' },
+            { text: 'Lista', disabled: true }
           ],
-          pageTitle: 'Lista de repartidores',
+          text: 'Lista de repartidores',
           rule: 'editor'
         }
       },
@@ -73,10 +73,10 @@ Vue.use(VueRouter)
         component: () => import('@/views/category/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Categorias', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Categorias', disabled: true }
           ],
-          pageTitle: 'Categorias de productos',
+          text: 'Categorias de productos',
           rule: 'editor'
         }
       },
@@ -86,10 +86,10 @@ Vue.use(VueRouter)
         component: () => import('@/views/user/user-list/UserList.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Usuarios', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Usuarios', disabled: true }
           ],
-          pageTitle: 'Usuarios',
+          text: 'Usuarios',
           rule: 'editor'
         }
       },
@@ -99,10 +99,10 @@ Vue.use(VueRouter)
         component: () => import('@/views/role/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Roles', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Roles', disabled: true }
           ],
-          pageTitle: 'Roles',
+          text: 'Roles',
           rule: 'editor'
         }
       },     
@@ -112,11 +112,11 @@ Vue.use(VueRouter)
         component: () => import('@/views/role/module/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Roles', url: '/roles' },
-            { title: 'Modulos', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Roles', href: '/roles' },
+            { text: 'Modulos', disabled: true }
           ],
-          pageTitle: 'Modulos',
+          text: 'Modulos',
           rule: 'editor'
         }
       },
@@ -126,12 +126,12 @@ Vue.use(VueRouter)
         component: () => import('@/views/role/module/permission/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Roles', url: '/roles' },
-            { title: 'Modulos', url: '/roles/:id/modulos' },
-            { title: 'Permisos', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Roles', href: '/roles' },
+            { text: 'Modulos', href: '/roles/:id/modulos' },
+            { text: 'Permisos', disabled: true }
           ],
-          pageTitle: 'Permisos',
+          text: 'Permisos',
           rule: 'editor'
         }
       },
@@ -141,11 +141,11 @@ Vue.use(VueRouter)
         component: () => import('@/views/user/address/Index.vue'),
         meta: {
           breadcrumb: [
-            { title: 'Inicio', url: '/' },
-            { title: 'Usuarios', url: '/usuarios' },
-            { title: 'Direcciones', active: true }
+            { text: 'Inicio', href: '/' },
+            { text: 'Usuarios', href: '/usuarios' },
+            { text: 'Direcciones', disabled: true }
           ],
-          pageTitle: 'direcciones',
+          text: 'direcciones',
           rule: 'editor'
         }
       }

@@ -1,59 +1,63 @@
 <template>
-  <div>
-    <v-row>
-      <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-        <div>
-          <div class="btn-back" @click="toRole()">
-            <h5>
-              <feather-icon icon="ArrowLeftIcon" svgClasses="h-5 w-5 mr-4" /> Volver</h5>
+  <v-card>    
+    <v-card-text>
+      <v-row>
+        <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
+          <div>
+            <div class="btn-back" @click="toRole()">
+              <h5>
+                <feather-icon icon="ArrowLeftIcon" svgClasses="h-5 w-5 mr-4" /> Volver</h5>
+            </div>
+            <div class="d-flex justify-between">
+              <h4>Lista de módulos del sistema</h4>
+              <v-btn @click="handlePrompt(true)" color="success"  class="mr-2">Agergar</v-btn>
+            </div>
+            <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="modules">
+
+              <template slot="thead">
+                <vs-th sort-key="nombre">Título</vs-th>
+                <vs-th sort-key="slug">Slug</vs-th>
+                <vs-th sort-key="descripcion">Descripción</vs-th>
+                <vs-th>Aciones</vs-th>
+              </template>
+
+              <template slot-scope="{data}">
+                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].nombre">
+                    {{data[indextr].nombre}}
+                  </vs-td>
+                  <vs-td :data="data[indextr].slug">
+                    {{data[indextr].slug}}
+                  </vs-td>
+                  <vs-td :data="data[indextr].descripcion">
+                    {{ data[indextr].descripcion }}
+                  </vs-td>
+                  <vs-td class="actions">
+                    <router-link :to="{name:'permission', params: {id: $route.params.id, idmodulo: tr.id}}">
+                      <feather-icon icon="KeyIcon" svgClasses="h-5 w-5 mr-4 hover:text-warning cursor-pointer" />
+                    </router-link>
+                    <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
+                      @click="editRecord(tr)" />
+                    <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
+                      @click="confirmDeleteRecord(tr.id)" />
+                  </vs-td>
+                </vs-tr>
+              </template>
+            </vs-table>
           </div>
-          <div class="flex justify-between">
-            <h4>Lista de módulos del sistema</h4>
-            <v-btn @click="handlePrompt(true)" color="success" type="filled" class="mr-2">Agergar</v-btn>
-          </div>
-          <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="modules">
+        </v-col>
+      </v-row>
+    </v-card-text>
 
-            <template slot="thead">
-              <vs-th sort-key="nombre">Título</vs-th>
-              <vs-th sort-key="slug">Slug</vs-th>
-              <vs-th sort-key="descripcion">Descripción</vs-th>
-              <vs-th>Aciones</vs-th>
-            </template>
+    <v-btn @click="handlePrompt()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
 
-            <template slot-scope="{data}">
-              <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-                <vs-td :data="data[indextr].nombre">
-                  {{data[indextr].nombre}}
-                </vs-td>
-                <vs-td :data="data[indextr].slug">
-                  {{data[indextr].slug}}
-                </vs-td>
-                <vs-td :data="data[indextr].descripcion">
-                  {{ data[indextr].descripcion }}
-                </vs-td>
-                <vs-td class="actions">
-                  <router-link :to="{name:'permission', params: {id: $route.params.id, idmodulo: tr.id}}">
-                    <feather-icon icon="KeyIcon" svgClasses="h-5 w-5 mr-4 hover:text-warning cursor-pointer" />
-                  </router-link>
-                  <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-                    @click="editRecord(tr)" />
-                  <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
-                    @click="confirmDeleteRecord(tr.id)" />
-                </vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-        </div>
-      </v-col>
-    </v-row>
-
-    <v-dialog title="Modulo" buttons-hidden @close="close" v-model="activePrompt">
-      <div class="con-exemple-prompt">
-        <module-create v-if="!editing" @closePrompt="close()"></module-create>
-        <module-edit v-else @closePrompt="close()" :module="moduleToEdit"></module-edit>
-      </div>
+    <v-dialog v-model="activePrompt">
+      <module-create v-if="!editing" @closePrompt="close()"></module-create>
+      <module-edit v-else @closePrompt="close()" :module="moduleToEdit"></module-edit>
     </v-dialog>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -116,7 +120,7 @@ export default {
           this.fetchRoleModules(this.$route.params.id)
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
         })
     },
     toRole() {

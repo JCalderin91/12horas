@@ -1,14 +1,17 @@
 <template>
-	<div>
-		<v-text-field class="inputx w-full" label="Nombre" placeholder="Nombre" v-model="module.nombre" />
-		<v-text-field class="inputx w-full" label="Slug" placeholder="Slug" v-model="module.slug" />
-		<br>
-		<v-textarea label="Descripción" v-model="module.descripcion" />
-		<div class="flex justify-end">
-			<v-btn @click="cancel()" color="danger"  class="mr-2">Cancelar</v-btn>
-			<v-btn @click="saveModule()" color="success" type="filled">Guardar</v-btn>   
-		</div>
-	</div>
+	<v-card>
+		<v-card-title>Formulario de módulo</v-card-title>
+		<v-card-text>
+			<v-text-field  label="Nombre" placeholder="Nombre" v-model="module.nombre" />
+			<v-text-field  label="Slug" placeholder="Slug" v-model="module.slug" />
+			<br>
+			<v-textarea label="Descripción" v-model="module.descripcion" />
+			<div class="d-flex justify-end">
+				<v-btn @click="cancel()" color="danger"  class="mr-2">Cancelar</v-btn>
+				<v-btn @click="saveModule()" color="success" >Guardar</v-btn>   
+			</div>
+		</v-card-text>
+	</v-card>
 </template>
 
 <script>
@@ -32,7 +35,7 @@ export default {
 					this.fetchRoleModules(this.$route.params.id)
 				})
 				.catch(() => {
-					this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+					this.$swal('Alerta!', 'Ha ocurrido un error','error')
 				})
 		},
 		cancel () {

@@ -25,7 +25,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-group>
-                <v-list-item v-else :key="item.text" link :to="{name: item.name}">
+                <v-list-item v-else :key="item.text" link :to="{name: item.name}" active-class="primary white--text">
                     <v-list-item-action>
                         <v-icon>{{ item.icon }}</v-icon>
                     </v-list-item-action>
@@ -44,22 +44,22 @@
 export default {
     data: () => ({
         items: [{
-                icon: 'mdi-contacts',
+                icon: 'mdi-bottle-soda',
                 text: 'Productos',
                 name: 'product-list'
              },
             {
-                icon: 'mdi-history',
+                icon: 'mdi-account',
                 text: 'Usuarios',
                 name: 'user'
             },
             {
-                icon: 'mdi-content-copy',
+                icon: 'mdi-folder-image',
                 text: 'Banners',
                 name: 'banner'
             },
             {
-                icon: 'mdi-content-copy',
+                icon: 'mdi-tag',
                 text: 'Categorias',
                 name: 'category'
             },
@@ -69,7 +69,7 @@ export default {
                 name: 'role'
             },
             {
-                icon: 'mdi-content-copy',
+                icon: 'mdi-cog',
                 text: 'Cofiguraciones',
                 name: 'configuration'
             }
@@ -83,6 +83,11 @@ export default {
             //     }, ],
             // },
         ],
-    })
+    }),
+    props: {
+        drawer: {
+            type: Boolean
+        }
+    }
 }
 </script>

@@ -31,10 +31,8 @@
     </v-btn>
 
     <v-dialog v-model="activePrompt">
-      <div class="con-exemple-prompt">
-        <banner-create v-if="!editing" @closePrompt="close()"></banner-create>
-        <banner-edit v-else @closePrompt="close()" :banner="bannerToEdit"></banner-edit>
-      </div>
+      <banner-create v-if="!editing" @closePrompt="close()"></banner-create>
+      <banner-edit v-else @closePrompt="close()" :banner="bannerToEdit"></banner-edit>
     </v-dialog>
   </v-card>
 </template>
@@ -122,7 +120,7 @@ export default {
               this.$emit('closePrompt')
             })
             .catch(() => {
-              this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+              this.$swal('Alerta!', 'Ha ocurrido un error','error')
             })
             .then(() => this.loading = false)
         }
@@ -133,7 +131,7 @@ export default {
     this.loading = true
     this.fetchBanners()
       .catch(() => {
-        this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+        this.$swal('Alerta!', 'Ha ocurrido un error','error')
       })
       .then(() => this.loading = false)
   },

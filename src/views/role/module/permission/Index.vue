@@ -1,52 +1,56 @@
 <template>
-  <div>
-    <v-row>
-      <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-        <div>
-          <div class="btn-back" @click="toModule()">
-            <h5>
-              <feather-icon icon="ArrowLeftIcon" svgClasses="h-5 w-5 mr-4" /> Volver</h5>
+  <v-card>
+    <v-card>
+      <v-row>
+        <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
+          <div>
+            <div class="btn-back" @click="toModule()">
+              <h5>
+                <feather-icon icon="ArrowLeftIcon" svgClasses="h-5 w-5 mr-4" /> Volver</h5>
+            </div>
+            <div class="d-flex justify-between">
+              <h4>Lista de permisos del módulo</h4>
+              <v-btn @click="handlePrompt(true)" color="success"  class="mr-2">Agergar</v-btn>
+            </div>
+            <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="permissions">
+
+              <template slot="thead">
+                <vs-th sort-key="nombre">Título</vs-th>
+                <vs-th sort-key="slug">Slug</vs-th>
+                <vs-th>Aciones</vs-th>
+              </template>
+
+              <template slot-scope="{data}">
+                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].nombre">
+                    {{ data[indextr].nombre }}
+                  </vs-td>
+                  <vs-td :data="data[indextr].slug">
+                    {{ data[indextr].slug }}
+                  </vs-td>
+                  <vs-td>
+                    <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
+                      @click="editRecord(tr)" />
+                    <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
+                      @click="confirmDeleteRecord(tr.id)" />
+                  </vs-td>
+                </vs-tr>
+              </template>
+            </vs-table>
           </div>
-          <div class="flex justify-between">
-            <h4>Lista de permisos del módulo</h4>
-            <v-btn @click="handlePrompt(true)" color="success" type="filled" class="mr-2">Agergar</v-btn>
-          </div>
-          <vs-table stripe noDataText="No hay datos" search max-items="10" pagination :data="permissions">
+        </v-col>
+      </v-row>
+    </v-card>
 
-            <template slot="thead">
-              <vs-th sort-key="nombre">Título</vs-th>
-              <vs-th sort-key="slug">Slug</vs-th>
-              <vs-th>Aciones</vs-th>
-            </template>
+    <v-btn @click="handlePrompt()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
 
-            <template slot-scope="{data}">
-              <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-                <vs-td :data="data[indextr].nombre">
-                  {{ data[indextr].nombre }}
-                </vs-td>
-                <vs-td :data="data[indextr].slug">
-                  {{ data[indextr].slug }}
-                </vs-td>
-                <vs-td>
-                  <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-                    @click="editRecord(tr)" />
-                  <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
-                    @click="confirmDeleteRecord(tr.id)" />
-                </vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-        </div>
-      </v-col>
-    </v-row>
-
-    <v-dialog title="Permiso" buttons-hidden @close="close" v-model="activePrompt">
-      <div class="con-exemple-prompt">
-        <permission-create v-if="!editing" @closePrompt="close()"></permission-create>
-        <permission-edit v-else @closePrompt="close()" :permission="permissionToEdit"></permission-edit>
-      </div>
+    <v-dialog v-model="activePrompt">
+      <permission-create v-if="!editing" @closePrompt="close()"></permission-create>
+      <permission-edit v-else @closePrompt="close()" :permission="permissionToEdit"></permission-edit>
     </v-dialog>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -113,7 +117,7 @@ export default {
           this.$emit('closePrompt')
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
         })
     },
     toModule() {

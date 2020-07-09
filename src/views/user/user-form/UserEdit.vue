@@ -1,86 +1,58 @@
-<!-- =========================================================================================
-  File Name: UserList.vue
-  Description: User List page
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
 
-  <div id="page-user-create">
+  <v-card>
+    <v-card-title>Formulario de usuario</v-card-title>
 
-    
-    <div> 
-
-      <v-row >
+    <v-card-text>
+      <v-row>
 
         <v-col lg="12" sm="12" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Nombres" placeholder="Nombres" v-model="user.nombres" :readonly="!editing"/>
+          <v-text-field label="Nombres" placeholder="Nombres" v-model="user.nombres" />
         </v-col>
 
         <v-col lg="5" sm="5" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Teléfono" placeholder="Teléfono" v-model="user.telefono" :readonly="!editing"/>
+          <v-text-field label="Teléfono" placeholder="Teléfono" v-model="user.telefono" />
         </v-col>
 
         <v-col lg="7" sm="7" xs="12" class="p-4 sm:p-2">
-          <v-text-field type="email" class="inputx w-full" label="Correo" placeholder="Correo" v-model="user.correo" :readonly="!editing"/>
+          <v-text-field type="email" label="Correo" placeholder="Correo" v-model="user.correo" />
         </v-col>
 
         <v-col lg="6" sm="6" xs="12" class="p-4 sm:p-2">
-          <v-text-field type="password" danger-text="Las contraseñas con coinciden" :danger="matchPasswords" class="inputx w-full" label="Contraseña" placeholder="Contraseña" v-model="user.password" :readonly="!editing"/>
+          <v-text-field type="password" danger-text="Las contraseñas con coinciden" :danger="matchPasswords"
+            label="Contraseña" placeholder="Contraseña" v-model="user.password" />
         </v-col>
 
         <v-col lg="6" sm="6" xs="12" class="p-4 sm:p-2">
-          <v-text-field type="password" :danger="matchPasswords" class="inputx w-full" label="Verificar contraseña" placeholder="Verificar contraseña" v-model="user.verified_password" :readonly="!editing"/>
-        </v-col>  
+          <v-text-field type="password" :danger="matchPasswords" label="Verificar contraseña"
+            placeholder="Verificar contraseña" v-model="user.verified_password" />
+        </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-select
-                label="Estado"
-                placeholder="Estado"
-                class="selectExample w-full"
-                v-model="user.status"
-                :readonly="!editing"
-              >
-                <v-select-item value="Activo" text="Activo" />
-                <v-select-item value="Inactivo" text="Inactivo" />
+          <v-select dense outlined label="Estado(s)" :items="status" v-model="user.status">
               </v-select>
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-select
-                label="Roles"
-                placeholder="Roles"
-                class="selectExample w-full"
-                v-model="user.rol_id"
-              >
-                <v-select-item :value="rol.id" :text="rol.nombre" v-for="(rol, key) in roles" :key="key" />
+          <v-select dense outlined label="Rol(es)" item-text="nombre" item-value="id"
+                :items="roles" v-model="user.rol_id">
               </v-select>
-        </v-col>     
+        </v-col>
 
 
-        <v-col sm="12" class="p-4 sm:p-2 flex justify-between">
-          <v-btn @click="openConfirm()" color="danger"  :disabled="editing" class="mr-2">Eliminar</v-btn>
+        <v-col sm="12" class="d-flex">
+          <v-btn @click="openConfirm()" color="error" outlined class="mr-2">Eliminar</v-btn>
 
-          <v-btn 
-            @click="toAddress(user.idusuario)"
-            color="warning"
-            type="filled"
-            :disabled="editing"
-            class="mr-2">Direcciones</v-btn>
-
-          <div class="flex justify-end">
-            <v-btn v-if="!editing" @click="editUser()" color="primary" type="filled" class="mr-2">Editar</v-btn>
-            <v-btn @click="cancel()" v-else color="danger"  class="mr-2">Cancelar</v-btn>
-            <v-btn @click="saveUser()" :disabled="!editing" color="success" type="filled">Guardar</v-btn>            
-          </div>
+          <v-btn @click="toAddress(user.idusuario)" color="warning" class="mr-2">Direcciones</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn @click="cancel()" color="danger" class="mr-2">Cancelar</v-btn>
+          <v-btn @click="saveUser()" color="success">Guardar</v-btn>
         </v-col>
 
       </v-row>
-    </div>
-  <!-- <div>{{user}}</div>  -->
-  </div>
+    </v-card-text>
+    <!-- <div>{{user}}</div>  -->
+  </v-card>
 
 </template>
 
@@ -95,56 +67,64 @@ export default {
       type: Boolean
     }
   },
-  data () {
-    return {
-      editing: false,
-      beforeEdit: {}
-    }
-  },
+  data: () => ({
+    status: [
+      {
+        text: 'Activo',
+        value: 'Activo'
+      },
+      {
+        text: 'Inactivo',
+        value: 'Inactivo'
+      },
+    ]
+  }),
   methods: {
     ...mapActions({
       'removeUser'  :'user/removeUser',
       'updateUser'  :'user/updateUser',
-      'fetchCategories'  :'category/fetchCategories'
+      'fetchCategories'  :'category/fetchCategories',
+      'fetchRoles'  :'role/fetchRoles',
     }),
     editUser () {
       this.beforeEdit = {...this.user}
-      this.editing = !this.editing
     },
     saveUser () {
       this.updateUser(this.user)
         .then(() => {
           this.$swal('Exito!', 'Usuario actualizado','success')
           this.$emit('closePrompt')
-          this.editing = !this.editing
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
     },
     openConfirm () {
-      this.$vs.dialog({
-        type:'confirm',
-        color: 'danger',
-        title: 'Confirmar',
-        text: '¿Está seguro de eliminar?',
-        accept: () => this.deleteUser
+      this.$swal({
+        title: '¿Esta seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Borrar'
+      }).then((result) => {
+        if (result.value) {
+          this.loading = true
+          this.removeProduct(this.user.idusuario)
+            .then(() => {
+              this.$swal('Borrado!', 'Su registro ha sido borrado','success')
+              this.$emit('closePrompt')
+            })
+            .catch(() => {
+              this.$swal('Alerta!', 'Ha ocurrido un error','error')
+            })
+            .then(() => this.loading = false)
+        }
       })
     },
-    deleteUser () {
-      this.removeUser(this.user.idusuario)
-        .then(() => {          
-          this.$swal('Exito!', 'Usuario eliminado','success')
-          this.$emit('closePrompt')
-        })
-        .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
-        })
-    },
     cancel () {
-      if (this.editing) this.user = {...this.beforeEdit}
-      else this.$emit('closePrompt')
-      this.editing = !this.editing
+      this.$emit('closePrompt')
     },
     toAddress (id) {
       this.$emit('closePrompt')
@@ -165,6 +145,7 @@ export default {
   },
   created () {
     this.fetchCategories()
+    this.fetchRoles()
   }
 }
 

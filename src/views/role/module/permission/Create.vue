@@ -1,13 +1,16 @@
 <template>
-	<div>
-		<v-text-field class="inputx w-full" label="Nombre" placeholder="Nombre" v-model="permission.nombre" />
-		<v-text-field class="inputx w-full" label="Slug" placeholder="Slug" v-model="permission.slug" />
-		<br>
-		<div class="flex justify-end">
-			<v-btn @click="cancel()" color="danger"  class="mr-2">Cancelar</v-btn>
-			<v-btn @click="savePermission()" color="success" type="filled">Guardar</v-btn>   
-		</div>
-	</div>
+	<v-card>
+		<v-card-title>Formulario de permiso</v-card-title>
+		<v-card-text>
+			<v-text-field  label="Nombre" placeholder="Nombre" v-model="permission.nombre" />
+			<v-text-field  label="Slug" placeholder="Slug" v-model="permission.slug" />
+			<br>
+			<div class="d-flex justify-end">
+				<v-btn @click="cancel()" color="danger"  class="mr-2">Cancelar</v-btn>
+				<v-btn @click="savePermission()" color="success" >Guardar</v-btn>   
+			</div>
+		</v-card-text>
+	</v-card>
 </template>
 
 <script>
@@ -34,7 +37,7 @@
 						this.$emit('closePrompt')
 					})
 					.catch(() => {
-						this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+						this.$swal('Alerta!', 'Ha ocurrido un error','error')
 					})
 			},
 			cancel () {

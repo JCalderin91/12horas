@@ -5,9 +5,9 @@
     
     <div>
 
-      <div class="flex justify-between">
+      <div class="d-flex justify-between">
         <h4>{{$route.meta.pageTitle}}</h4>
-        <v-btn @click="handleSelected(true)" color="success" type="filled">Agregar</v-btn>
+        <v-btn @click="handleSelected(true)" color="success" >Agregar</v-btn>
       </div>
 
        
@@ -60,13 +60,11 @@
 
     </div>
 
-    <v-dialog
-      title="Configuración"
-      @cancel="val=''"
-      @close="close"
-      buttons-hidden
-      class="custom"
-      v-model="activePrompt">
+    <v-btn @click="handlePrompt()" bottom color="success" dark small fab fixed right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+
+    <v-dialog v-model="activePrompt">
       <configuration-create v-if="!viewModal" @closePrompt="close()"></configuration-create>
       <configuration-edit v-else @closePrompt="close()" :configuration="{...configuration}"></configuration-edit>
     </v-dialog> 

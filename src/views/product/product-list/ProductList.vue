@@ -1,7 +1,7 @@
 <template>
 
-  <div>
-    <div>
+  <v-card>
+    <v-card-text>
       <v-card-title>
         {{$route.meta.pageTitle}}
         <v-spacer></v-spacer>
@@ -21,18 +21,18 @@
           </div>
         </template>
       </v-data-table>
-    </div>
+    </v-card-text>
 
     <v-btn @click="handleSelected()" bottom color="success" dark small fab fixed right>
       <v-icon>mdi-plus</v-icon>
     </v-btn>
 
-    <v-dialog title="Producto" v-model="activePrompt">
+    <v-dialog v-model="activePrompt">
       <product-create v-if="viewModal" @closePrompt="close()"></product-create>
       <product-edit v-else @closePrompt="close()" :product="{...product}"></product-edit>
     </v-dialog>
 
-  </div>
+  </v-card>
 
 </template>
 
@@ -116,7 +116,7 @@
     created() {
       this.fetchProducts()
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error','danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error','error')
         })
         .then(() => this.loading = false)
     }

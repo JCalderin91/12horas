@@ -4,42 +4,42 @@
       <v-row>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Consumo minimo" placeholder="Consumo minimo"
+          <v-text-field  label="Consumo minimo" placeholder="Consumo minimo"
             v-model="configuration.consumo_minimo" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Tolerancia (Minutos)" placeholder="Tolerancia (Minutos)"
+          <v-text-field  label="Tolerancia (Minutos)" placeholder="Tolerancia (Minutos)"
             v-model="configuration.min_tolerancia" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Costo por minuto" placeholder="Costo por minuto"
+          <v-text-field  label="Costo por minuto" placeholder="Costo por minuto"
             v-model="configuration.costo_minuto" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Tarifa minima" placeholder="Tarifa minima"
+          <v-text-field  label="Tarifa minima" placeholder="Tarifa minima"
             v-model="configuration.tarifa_minima" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Km permitidos" placeholder="Km permitidos"
+          <v-text-field  label="Km permitidos" placeholder="Km permitidos"
             v-model="configuration.km_permitidos" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Latitud" placeholder="Latitud"
+          <v-text-field  label="Latitud" placeholder="Latitud"
             v-model="configuration.lat_centro_envio" />
         </v-col>
 
         <v-col lg="4" sm="4" xs="12" class="p-4 sm:p-2">
-          <v-text-field class="inputx w-full" label="Longitud" placeholder="Longitud"
+          <v-text-field  label="Longitud" placeholder="Longitud"
             v-model="configuration.lng_centro_envio" />
         </v-col>
 
         <v-col sm="12" class="p-4 sm:p-2 flex justify-end">
-          <v-btn @click="saveConfiguration()" color="success" type="filled">Actualizar</v-btn>
+          <v-btn @click="saveConfiguration()" color="success" >Actualizar</v-btn>
         </v-col>
       </v-row>
     </div>
@@ -84,7 +84,7 @@ export default {
           this.cancel()
         })
         .catch(() => {
-          this.$swal('Alerta!', 'Ha ocurrido un error', 'danger')
+          this.$swal('Alerta!', 'Ha ocurrido un error', 'error')
         })
     },
     cancel() {
